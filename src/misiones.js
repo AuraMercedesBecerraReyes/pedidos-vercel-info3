@@ -104,7 +104,18 @@ export function validarCliente(cliente) {
 //   { registrado: 3, en_preparacion: 3, listo: 2, entregado: 2 }
 // Con una lista vacía, todos van en 0.
 export function resumenPorEstado(pedidos) {
-  return {} // TODO
+  let todos = {}
+
+  for( let i = 0; i < ESTADOS.length; i++){
+    todos[ESTADOS[i]] = 0 
+  }
+
+  for(let i = 0; i < pedidos.length; i++){
+    let estado = pedidos [i].estado
+    todos[estado] = todos[estado] + 1
+  }
+
+  return todos
 }
 
 // ----------------------------------------------------------------------------
