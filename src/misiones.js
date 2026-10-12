@@ -126,9 +126,31 @@ export function resumenPorEstado(pedidos) {
 // "José Martínez". Un texto vacío (o solo espacios) devuelve todos.
 // Pista: 'Ramírez'.normalize('NFD').replace(/[̀-ͯ]/g, '')
 //        Investiga qué hace NFD. Es un problema real en sistemas en español.
-export function buscarPedidos(pedidos, texto) {
-  return [] // TODO
+// NFD -> sirve para separar un caracter compuesto  a sus componentes individuales, por ejemplo separa el acento de la letra y 
+// sirve para procesar texto de forma estandarizada y facilitar busquedas o comparaciones
+function normalizarTexto(texto) {
+  return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
+
+export function buscarPedidos(pedidos, texto) {
+  let textoLimpio = normalizarTexto(texto).trim()
+
+  if (textoLimpio == '') {
+    return pedidos
+  }
+
+  let resultado = []
+
+  for (let i = 0; i < pedidos.length; i++) {
+    let clienteLimpio = normalizarTexto(pedidos[i].cliente)
+    if (clienteLimpio.includes(textoLimpio)) {
+      resultado.push(pedidos[i])
+    }
+  }
+
+  return resultado
+}
+
 
 // ----------------------------------------------------------------------------
 // MISIÓN 6 · DESTACADO — Los mejores clientes
